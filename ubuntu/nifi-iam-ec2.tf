@@ -106,7 +106,11 @@ resource "aws_iam_policy" "tf-nifi-instance-policy-route53" {
     {
       "Sid": "ListRoute53",
       "Effect": "Allow",
-      "Action": ["route53:ListHostedZonesByName","route53:ListHostedZones","route53:ListResourceRecordSets"],
+      "Action": [
+        "route53:ListHostedZonesByName",
+        "route53:ListHostedZones",
+        "route53:ListResourceRecordSets"
+      ],
       "Resource": ["*"]
     }
   ]

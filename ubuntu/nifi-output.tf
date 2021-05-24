@@ -38,3 +38,4 @@ AWS_PROFILE=${var.aws_profile} aws ssm start-associations-once --region ${var.aw
 
 OUTPUT
 }
+

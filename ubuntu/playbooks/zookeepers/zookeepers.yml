@@ -170,7 +170,7 @@
       become_user: nifi
       when:
         - zk_downloaded.stat.exists == false
-      retries: 300
+      retries: 50
       delay: 2
       register: zk_from_s3
       until: zk_from_s3 is not failed
@@ -418,6 +418,15 @@
         mode: 0640
       register: nifi_log_file
 
+    - name: bootstrap.conf
+      template:
+        src: bootstrap.conf
+        dest: /opt/nifi/conf/bootstrap.conf
+        owner: nifi
+        group: nifi
+        mode: 0640
+      register: bootstrap_conf_file
+
     - name: connect string in state-management
       lineinfile:
         path: /opt/nifi/conf/state-management.xml
@@ -487,7 +496,7 @@
       register: ca_from_s3
       until: ca_from_s3 is not failed
       become_user: nifi
-      when: 
+      when:
         - ca_cert.stat.exists == false
 
     - name: get pre-existing admin from s3
@@ -577,7 +586,7 @@
       register: admin_from_s3
       until: admin_from_s3 is not failed
       become_user: nifi
-      when: 
+      when:
         - admin_cert.stat.exists == false
 
     - name: admin cli.properties template
@@ -596,7 +605,7 @@
     - name: generate node keystore when not exists
       shell: |
         export JAVA_HOME=/usr/lib/jvm/default-java
-        /opt/nifi-toolkit/bin/tls-toolkit.sh standalone -n {{ ansible_nodename }} -d 3650 -k 2048 -s SHA256WITHRSA -T jks --subjectAlternativeNames zk{{ node_id.stdout }},{{ ansible_nodename }},{{ lb_dns }} -P {{ generated_password.stdout }} -S {{ generated_password.stdout }}
+        /opt/nifi-toolkit/bin/tls-toolkit.sh standalone -n {{ ansible_nodename }} -d 3650 -k 2048 -s SHA256WITHRSA -T jks --subjectAlternativeNames zk{{ node_id.stdout }},{{ ansible_nodename }},{{ lb_dns }},nifi-registry.gov-staging.rebelliondefense.com -P {{ generated_password.stdout }} -S {{ generated_password.stdout }}
       args:
         chdir: /opt/nifi-certificates/
         executable: /bin/bash

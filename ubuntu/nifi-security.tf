@@ -48,6 +48,16 @@ resource "aws_security_group_rule" "tf-nifi-prisg-web-out" {
   cidr_blocks       = ["0.0.0.0/0"]
 }
 
+resource "aws_security_group_rule" "tf-nifi-prisg-registry-out" {
+  security_group_id = aws_security_group.tf-nifi-prisg.id
+  type              = "egress"
+  description       = "OUT TO PUB PRI NAT - HTTPS Registry"
+  from_port         = 18443
+  to_port           = 18443
+  protocol          = "tcp"
+  cidr_blocks       = ["0.0.0.0/0"]
+}
+
 # ingress
 resource "aws_security_group_rule" "tf-nifi-prisg-web-in" {
   security_group_id = aws_security_group.tf-nifi-prisg.id
