@@ -31,7 +31,8 @@
             <fileNamePattern>${org.apache.nifi.bootstrap.config.log.dir}/nifi-app_%d{yyyy-MM-dd_HH}.%i.log</fileNamePattern>
             <maxFileSize>100MB</maxFileSize>
             <!-- keep 30 log files worth of history -->
-            <maxHistory>30</maxHistory>
+            <maxHistory>1</maxHistory>
+            <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
         <immediateFlush>true</immediateFlush>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -83,7 +84,7 @@
 
     <!-- valid logging levels: TRACE, DEBUG, INFO, WARN, ERROR -->
 
-    <logger name="org.apache.nifi" level="INFO"/>
+    <logger name="org.apache.nifi" level="DEBUG"/>
     <logger name="org.apache.nifi.processors" level="WARN"/>
     <logger name="org.apache.nifi.processors.standard.LogAttribute" level="INFO"/>
     <logger name="org.apache.nifi.processors.standard.LogMessage" level="INFO"/>

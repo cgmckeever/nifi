@@ -6,6 +6,10 @@ variable "aws_profile" {
   type = string
 }
 
+variable "aws_default_tags" {
+  type = map(string)
+}
+
 variable "vpc_cidr" {
   type = string
 }
@@ -117,6 +121,14 @@ variable "vendor_ami_name_string" {
 provider "aws" {
   region  = var.aws_region
   profile = var.aws_profile
+
+  default_tags {
+    tags = var.aws_default_tags
+  }
+
+  ignore_tags {
+    keys = ["Client", "Environment", "Product", "TF-Project"]
+  }
 }
 
 # region azs
